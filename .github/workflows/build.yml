@@ -1,3 +1,4 @@
+
 name: Build Android App
 
 on:
@@ -44,13 +45,10 @@ jobs:
         pip install --upgrade cython==0.29.36
         pip install --upgrade buildozer
 
-    - name: Accept Android SDK Licenses
+    - name: Setup Android SDK and Accept Licenses
       run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        echo y | sdkmanager --licenses || true
-      env:
-        ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
+        sdkmanager --sdk_root=/home/runner/.buildozer/android/platform/android-sdk "build-tools;33.0.1" "platforms;android-33"
+        yes | sdkmanager --sdk_root=/home/runner/.buildozer/android/platform/android-sdk --licenses
 
     - name: Build with Buildozer
       run: |
